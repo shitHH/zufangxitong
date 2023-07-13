@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <!--作者：李英
+            时间：2021-4-6
+            描述：角色类（role）Dao层的mapper文件-->
+<mapper namespace="com.etc.dao.RoleDao">
+    <!--查询所有的角色-->
+    <select id="findAll" resultType="Role">
+        select * from role
+    </select>
+    <!--增加一个角色-->
+    <insert id="addRole">
+        INSERT INTO role SET role = #{role}
+    </insert>
+    <!--删除一个角色-->
+    <delete id="delete">
+        DELETE FROM role WHERE rid = #{rid}
+    </delete>
+    <!--更新一个角色-->
+    <update id="update">
+        UPDATE role SET role = #{role} WHERE rid =#{rid}
+    </update>
+</mapper>
+
+

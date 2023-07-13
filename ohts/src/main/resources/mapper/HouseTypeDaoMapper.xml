@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.etc.dao.HouseTypeDao">
+
+    <!--查询所有户型信息-->
+    <select id="findAllHouseType" resultType="HouseType">
+        SELECT * FROM housetype
+    </select>
+
+    <!--添加户型信息-->
+    <insert id="insert">
+        INSERT INTO housetype (`type`) VALUES (#{type})
+    </insert>
+
+    <!--删除户型信息(支持批量删除)-->
+    <delete id="delete">
+        DELETE FROM housetype WHERE tid IN
+        <foreach collection="array" item="tid" open="(" separator="," close=")">
+            #{tid}
+        </foreach>
+    </delete>
+
+    <!--更新户型信息-->
+    <update id="update">
+        UPDATE housetype SET `type` = #{type} WHERE tid = #{tid}
+    </update>
+
+</mapper>

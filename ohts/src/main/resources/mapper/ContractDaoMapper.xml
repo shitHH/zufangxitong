@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--作者：李英
+    时间：2021-4-8
+    描述：合同dao的mapper-->
+<mapper namespace="com.etc.dao.ContractDao">
+    <!--添加合同-->
+    <insert id="insertContract" parameterType="Contract" useGeneratedKeys="true" keyProperty="cid">
+        INSERT INTO contract
+        <set>
+            <if test="byuid!=null">byuid=#{byuid},</if>
+            <if test="hid!=null">hid=#{hid},</if>
+            <if test="aid!=null">aid=#{aid},</if>
+            <if test="useto!=null">useto=#{useto},</if>
+            <if test="sauid!=null">sauid=#{sauid},</if>
+            <if test="signdate!=null">signdate=#{signdate},</if>
+            <if test="price!=null">price=#{price}</if>
+        </set>
+    </insert>
+    <!--删除合同-->
+    <delete id="deleteContract">
+        DELETE FROM contract WHERE cid = #{cid}
+    </delete>
+    <!--查询所有的合同-->
+    <select id="findAll" resultType="Contract">
+        select * from contract
+    </select>
+    <!--根据合同编号查询合同详细内容-->
+    <select id="findByCid" resultType="Contract">
+        select * from contract where cid = #{cid}
+    </select>
+    <!--根据买家ID查询合同-->
+    <select id="findByUid" resultType="Contract">
+        select * from contract where byuid = #{byid}
+    </select>
+    <!--根据房屋ID查询合同-->
+    <select id="findByHid" resultType="Contract">
+        select * from contract where hid = #{hid}
+    </select>
+    <!--根据经纪人编号查询合同列表-->
+    <select id="findByAid" resultType="Contract">
+        select * from contract where aid = #{aid}
+    </select>
+    <!--更新合同信息-->
+    <update id="updateContract">
+        UPDATE contract
+        <set>
+            <if test="byuid!=null">byuid=#{byuid},</if>
+            <if test="hid!=null">hid=#{hid},</if>
+            <if test="useto!=null">useto=#{useto},</if>
+            <if test="sauid!=null">sauid=#{sauid},</if>
+            <if test="signdate!=null">signdate=#{signdate},</if>
+            <if test="aid!=null">aid=#{aid},</if>
+            <if test="price!=null">price=#{price}</if>
+        </set>
+        where cid = #{cid}
+    </update>
+</mapper>

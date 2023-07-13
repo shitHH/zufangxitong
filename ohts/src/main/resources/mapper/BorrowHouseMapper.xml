@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.dao.BorrowHouseDao">
+<!--    查找所有租赁房源的集合-->
+    <select id="findAll" resultType="BorrowHouseVO">
+        SELECT * FROM borrowhouse,house,ownuser WHERE borrowhouse.`hid`=house.`hid` AND borrowhouse.`uid`=ownuser.`uid`
+    </select>
+    <!--    根据id查找租赁房源-->
+    <select id="findByBrid" resultType="BorrowHouseVO">
+        SELECT * FROM borrowhouse,house,ownuser WHERE borrowhouse.`hid`=house.`hid` AND borrowhouse.`uid`=ownuser.`uid` AND borrowhouse.brid=#{brid}
+    </select>
+    <!--    根据id查找租赁房源-->
+    <select id="findByid" resultType="BorrowHouse">
+        SELECT * FROM borrowhouse WHERE brid=#{brid}
+    </select>
+    <!--    根据房源id查找租赁信息-->
+    <select id="findByHid" resultType="BorrowHouseVO">
+        SELECT * FROM borrowhouse,house,ownuser WHERE borrowhouse.`hid`=house.`hid` AND borrowhouse.`uid`=ownuser.`uid` AND borrowhouse.hid=#{hid}
+    </select>
+    <!--    增加租赁房源-->
+    <insert id="addBorrowHouse" >
+        INSERT INTO borrowhouse(uid,hid,rent,brtype,utime,ptype,ancillary,remark)VALUES(#{uid},#{hid},#{rent},#{brtype},#{utime},#{ptype},#{ancillary},#{remark})
+    </insert>
+    <!--    更新租赁房源-->
+    <update id="updateBorrowHouse">
+        UPDATE borrowhouse
+        <set>
+            <if test="uid!=null">uid=#{uid},</if>
+            <if test="hid!=null">hid=#{hid},</if>
+            <if test="rent!=null">rent=#{rent},</if>
+            <if test="brtype!=null">brtype=#{brtype},</if>
+            <if test="ancillary!=null">ancillary=#{ancillary},</if>
+            <if test="remark!=null">remark=#{remark},</if>
+            <if test="ptype!=null">ptype=#{ptype}</if>
+        </set>
+        where brid = #{brid}
+    </update>
+
+    <!--查询审核通过的可租赁房源的所有信息-->
+    <select id="findBorrowAll" resultType="BorrowHouseVO">
+        SELECT * FROM house,usetype,housetype,borrowhouse WHERE house.`tid`=housetype.`tid` AND house.`utid`=usetype.`utid` AND house.`hid`=borrowhouse.`hid`  AND house.`ispass`="审核通过"AND house.utid=603
+    </select>
+    <!--通过租赁表编号查询具体的房源信息-->
+    <select id="findBorrowByBrid" resultType="BorrowHouseVO">
+        SELECT * FROM house,usetype,housetype,borrowhouse WHERE house.`tid`=housetype.`tid` AND house.`utid`=usetype.`utid` AND house.`hid`=borrowhouse.`hid`  AND house.`ispass`="审核通过"AND house.utid=603 AND borrowhouse.`brid`=#{brid}
+    </select>
+    <!--通过租赁表编号查询租赁表信息-->
+    <select id="findBorrowByBrid1" resultType="BorrowHouse">
+        SELECT * FROM borrowhouse WHERE brid=#{brid}
+    </select>
+</mapper>

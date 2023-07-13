@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.dao.AdminDao">
+    <!--查询所有管理员-->
+    <select id="findAll" resultType="Admin">
+        SELECT * FROM admin
+    </select>
+    <!--登录-->
+    <select id="findByAccountAndPass" resultType="Admin">
+        SELECT * FROM admin WHERE account=#{account} AND pass=#{pass}
+    </select>
+    <!--注册-->
+    <insert id="addAdmin" parameterType="Admin">
+        INSERT INTO admin (account,pass) VALUES (#{account},#{pass})
+    </insert>
+    <!--更新-->
+    <update id="update" parameterType="Admin">
+        UPDATE admin SET account=#{account},pass=#{pass}  WHERE adid=#{adid}
+    </update>
+    <!--批量删除-->
+    <delete id="delete" parameterType="Admin">
+        DELETE FROM admin WHERE adid IN
+        <foreach collection="array" item="adid" open="(" separator="," close=")">
+            #{adid}
+        </foreach>
+    </delete>
+</mapper>

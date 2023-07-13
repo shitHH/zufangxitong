@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.dao.AncillaryDao">
+    <!--查询所有设施-->
+    <select id="findAll" resultType="Ancillary">
+        SELECT * FROM ancillary
+    </select>
+    <!--通过设施名字进行模糊查询-->
+    <select id="findByAncillary" resultType="Ancillary">
+       SELECT * FROM ancillary WHERE ancillary LIKE '${ancillary}%'
+    </select>
+    <!--添加设施-->
+    <insert id="addAncillary" parameterType="Ancillary">
+        INSERT INTO ancillary (ancillary) VALUE (#{ancillary});
+    </insert>
+    <!--批量删除-->
+    <delete id="deleteAncillary" parameterType="Ancillary">
+        DELETE FROM ancillary WHERE anid IN
+        <foreach collection="array" item="anid" open="(" separator="," close=")">
+            #{anid}
+        </foreach>
+    </delete>
+</mapper>

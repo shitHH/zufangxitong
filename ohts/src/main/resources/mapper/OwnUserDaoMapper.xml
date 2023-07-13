@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--作者：李英
+    时间：2021-4-6
+    描述：用户类（OwnUser）Dao层的mapper文件-->
+<mapper namespace="com.etc.dao.OwnUserDao">
+    <!--查询所有用户-->
+    <select id="findAll" resultType="OwnUser">
+        select * from ownuser
+    </select>
+    <!--添加一个新用户-->
+    <insert id="addUser">
+        INSERT INTO ownuser (uname,usex,utel,upass,uage,ucard,`name`,aid,rid) VALUES (#{uname},#{usex},#{utel},#{upass},#{uage},#{ucard},#{name},#{aid},#{rid})
+    </insert>
+    <!--添加一个业主-->
+    <insert id="addyezhu">
+        INSERT INTO ownuser (uname,usex,utel,upass,uage,ucard,`name`,rid,aid) VALUES (#{uname},#{usex},#{utel},#{upass},#{uage},#{ucard},#{name},#{rid},#{aid})
+    </insert>
+    <!--对用户信息进行更新-->
+    <update id="update">
+        UPDATE ownuser
+        <set>
+            <if test="uname!=null">`uname`=#{uname},</if>
+            <if test="usex!=null">usex=#{usex},</if>
+            <if test="utel!=null">utel=#{utel},</if>
+            <if test="upass!=null">upass=#{upass},</if>
+            <if test="uage!=0">uage=#{uage},</if>
+            <if test="ucard!=null">ucard=#{ucard},</if>
+            <if test="name!=null">`name`=#{name},</if>
+            <if test="rid!=0">rid=#{rid},</if>
+            <if test="aid!=0">aid=#{aid}</if>
+        </set>
+        WHERE uid = #{uid}
+    </update>
+    <!--根据用户id查找用户信息-->
+    <select id="findByid" resultType="OwnUser">
+        select * from ownuser where uid = #{uid}
+    </select>
+    <!--根据用户名字进行模糊查询-->
+    <select id="findUserList" resultType="OwnUser">
+        select * from ownuser where uname like '%${uname}%'
+    </select>
+    <!--根据用户注册名字进行模糊查询-->
+    <select id="findNameList" resultType="OwnUser">
+        select * from ownuser where name like '%${name}%'
+    </select>
+    <!--根据电话和密码进行用户查询-->
+    <select id="findUser" resultType="OwnUser">
+         select * from ownuser where utel = #{utel} and upass = #{upass}
+    </select>
+    <!--查找经纪人名下的所有（仅）用户-->
+    <select id="findOwnUserList" resultType="OwnUser">
+        SELECT * FROM ownuser WHERE rid = #{rid} AND aid = #{aid}
+    </select>
+    <!--根据aid查询所有用户-->
+    <select id="findAllOwnUserByAid" resultType="OwnUser">
+        SELECT * FROM ownuser WHERE aid = #{aid}
+    </select>
+    <!--根据Rid查询-->
+    <select id="findByRid" resultType="OwnUser">
+        SELECT * FROM ownuser WHERE rid = #{rid}
+    </select>
+</mapper>

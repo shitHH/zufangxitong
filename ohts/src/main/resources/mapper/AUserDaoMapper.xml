@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.dao.AUserDao">
+    <!--查询所有经纪人-->
+    <select id="findAll" resultType="AUser">
+        SELECT * FROM auser
+    </select>
+    <select id="findByAid" resultType="AUser">
+        SELECT * FROM auser where aid=#{aid}
+    </select>
+    <select id="findByAtelAndApass" resultType="AUser">
+        SELECT * FROM auser WHERE atel=#{atel} AND apass=#{apass}
+    </select>
+    <select id="findByRolename" resultType="AUserVO">
+        SELECT  auser.`atel`,auser.`apass`,auser.`aname`,auser.`asex`,auser.`aage`,auser.`acard`,role.`role`  FROM auser,role WHERE auser.`rid`=role.`rid` AND role.`role`=#{role}
+    </select>
+    <insert id="addAUser" parameterType="AUser">
+        INSERT INTO auser (rid,atel,apass,aname,asex,aage,acard) VALUES(#{rid},#{atel},#{apass},#{aname},#{asex},#{aage},#{acard})
+    </insert>
+    <update id="updateAUser" parameterType="AUser">
+        UPDATE auser
+        <set>
+            <if test="rid!=0">rid = #{rid},</if>
+            <if test="atel!=null">atel = #{atel},</if>
+            <if test="apass!=null">apass = #{apass},</if>
+            <if test="aname!=null">aname = #{aname},</if>
+            <if test="asex!=null">asex = #{asex},</if>
+            <if test="aage!=0">aage = #{aage},</if>
+            <if test="acard!=null">acard = #{acard}</if>
+
+        </set>
+        where aid = #{aid}
+
+    </update>
+    <delete id="deleteAUser">
+        DELETE FROM auser WHERE aid IN
+        <foreach collection="array" item="aid" open="(" separator="," close=")">
+            #{aid}
+        </foreach>
+    </delete>
+
+    <select id="findAuserRid" resultType="AuserVo">
+        SELECT * FROM auser ,role  WHERE auser.`rid` = role.`rid` AND aid = #{aid}
+    </select>
+    <select id="findAllAuser" resultType="AuserVo">
+        select * from auser,role where auser.rid=role .rid
+    </select>
+
+    <select id="findAuserByUid" resultType="AuserVo">
+         SELECT * FROM ownuser,auser WHERE ownuser.`aid`=auser.`aid` AND ownuser.uid=#{uid}
+    </select>
+    <select id="findByRid" resultType="AuserVo">
+         SELECT * FROM auser where rid=#{rid}
+    </select>
+
+    <select id="findAuserChart" resultType="ChartAuserVo">
+       SELECT auser.rid,COUNT(*) VALUE,role.role AS `name` FROM auser,role WHERE auser.rid = role.rid GROUP BY auser.rid
+    </select>
+
+
+    <select id="findOwnuserChart" resultType="ChartAuserVo">
+       SELECT ownuser.rid,COUNT(*) VALUE,role.role AS `name` FROM ownuser,role WHERE ownuser.rid = role.rid GROUP BY ownuser.rid
+    </select>
+
+</mapper>

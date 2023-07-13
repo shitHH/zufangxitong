@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.etc.dao.HouseDao">
+    <!--查询所有房源信息-->
+    <select id="findAllHouse" resultType="House">
+        SELECT * FROM house ORDER BY hid DESC
+    </select>
+    <!--通过房源编号查询房源信息-->
+    <select id="findByHid" resultType="House">
+        SELECT * FROM house where hid=#{hid}
+    </select>
+    <!--添加房源信息-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="hid" keyColumn="hid">
+        INSERT INTO house (uid,tid,utid,harea,aspect,plot,hyear,hfloor,fitment,property,houseimage) VALUES (#{uid},#{tid},#{utid},#{harea},#{aspect},#{plot},#{hyear},#{hfloor},#{fitment},#{property},#{houseimage})
+    </insert>
+    <!--删除房源(支持批量删除)-->
+    <delete id="delete">
+        DELETE FROM house WHERE hid IN
+        <foreach collection="array" item="hid" open="(" separator="," close=")">
+            #{hid}
+        </foreach>
+    </delete>
+    <!--更新房源信息-->
+    <update id="update">
+        UPDATE house
+        <set>
+            <if test="uid!=0">uid=#{uid},</if>
+            <if test="tid!=0">tid=#{tid},</if>
+            <if test="utid!=0">utid=#{utid},</if>
+            <if test="harea!=null">harea=#{harea},</if>
+            <if test="aspect!=null">aspect=#{aspect},</if>
+            <if test="plot!=null">plot=#{plot},</if>
+            <if test="hfloor!=null">hfloor=#{hfloor},</if>
+            <if test="fitment!=null">fitment=#{fitment},</if>
+            <if test="hyear!=null">hyear=#{hyear},</if>
+            <if test="property!=null">property=#{property},</if>
+            <if test="ispass!=null">ispass=#{ispass},</if>
+            <if test="houseimage!=null">houseimage=#{houseimage},</if>
+            <if test="ancilary!=null">ancilary=#{ancilary}</if>
+        </set>
+        where hid = #{hid}
+    </update>
+    <!--查询所有房源的信息-->
+    <select id="findAll" resultType="HouseVO">
+        SELECT * FROM house,usetype,housetype WHERE house.`utid`=usetype.`utid` AND house.`tid`=housetype.`tid` order by hid
+    </select>
+    <!--通过房源编号查询具体房源信息-->
+    <select id="findByHid3" resultType="HouseVO">
+       SELECT * FROM house,usetype,housetype WHERE house.`utid`=usetype.`utid` AND house.`tid`=housetype.`tid` AND house.`hid`=#{hid}
+    </select>
+    <!--通过用途编号查询具体房源信息-->
+    <select id="findByUtid" resultType="HouseVO">
+       SELECT * FROM house,usetype,housetype WHERE house.`utid`=usetype.`utid` AND house.`tid`=housetype.`tid` AND house.`utid`=#{utid}
+    </select>
+    <!--查询所有审核通过房源的信息-->
+    <select id="findtgAll" resultType="HouseVO">
+         SELECT * FROM house,usetype,housetype WHERE house.`utid`=usetype.`utid` AND house.`tid`=housetype.`tid` AND house.`ispass`="审核通过"
+    </select>
+    <!--通过用途编号查询具体房源信息-->
+    <select id="findtgByUtid" resultType="HouseVO">
+       SELECT * FROM house,usetype,housetype WHERE house.`utid`=usetype.`utid` AND house.`tid`=housetype.`tid` AND house.`utid`=#{utid} AND house.`ispass`="审核通过"
+    </select>
+    <!--查找业主名下的所有房产-李英-->
+    <select id="findByUid" resultType="House">
+        select * from house where uid = #{uid}
+    </select>
+    <!--查询所有房源的信息-->
+    <select id="findwtgAll" resultType="HouseVO">
+         SELECT * FROM house,usetype,housetype WHERE house.`utid`=usetype.`utid` AND house.`tid`=housetype.`tid`
+    </select>
+
+</mapper>
